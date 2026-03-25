@@ -39,35 +39,59 @@ Defaults unless specified:
 ---
 
 ## Workflow
+
 All steps in this workflow are MANDATORY and must be executed in order. Execute every step without skipping, merging, or reordering. If a step is blocked or seemingly not applicable, STOP and request the missing context, or explicitly mark it as "N/A" with a one-sentence justification in the final report before proceeding. Continue only when the gate for the current step is satisfied.
 
+**CRITICAL -- WORKFLOW INTEGRITY RULES:**
+- NEVER remove, rename, or consolidate checklist items from your task progress. Every step listed below must appear in task_progress from start to finish.
+- NEVER replace specific step names (e.g., "Run static analysis", "Execute tests") with vague alternatives (e.g., "Complete workflow", "Finalize").
+- The task is NOT complete after writing files. Writing `.cls` and `.cls-meta.xml` files is the MIDPOINT of this workflow, not the end. Steps 6 and 7 are mandatory tool invocations that MUST execute before completion.
+- NEVER call `attempt_completion` or present a final summary until Steps 6, 7, and 8 are all executed and documented with their actual tool outputs.
+
 1. [MANDATORY] **Discover project conventions**
-   - Service–Selector–Domain layering, logging utilities
+   - Service-Selector-Domain layering, logging utilities
    - Existing classes/triggers and current trigger framework or handler pattern
    - Whether Trigger Actions Framework (TAF) is already in use
 
 2. [MANDATORY] **Choose the smallest correct pattern** (see Type-Specific Guidance below)
 
 3. [MANDATORY] **Review templates and assets**
-   - Check this skill’s `templates/` and `assets/`
+   - Check this skill's `templates/` and `assets/`
    - For any test class work, always read and use `generating-apex-test` skill
 
-4. [MANDATORY] **Author with guardrails** — apply every rule in the Rules section below
+4. [MANDATORY] **Author with guardrails** -- apply every rule in the Rules section below
    - Generate `{ClassName}.cls` with ApexDoc
    - Generate `{ClassName}.cls-meta.xml`
 
-5. [MANDATORY] **Generate test classes** — Use the skill `generating-apex-test` and follow its complete workflow to generate `{ClassName}Test.cls` and `{ClassName}Test.cls-meta.xml`. You MUST use that skill now and execute its instructions before proceeding to Step 6. After the test skill workflow completes, return here and continue with Step 6 — do NOT end the task.
+5. [MANDATORY] **Generate test classes** -- Use the skill `generating-apex-test` and follow its complete workflow to generate `{ClassName}Test.cls` and `{ClassName}Test.cls-meta.xml`. You MUST use that skill now and execute its instructions before proceeding to Step 6. After the test skill workflow completes, return here and continue with Step 6 -- do NOT end the task.
 
-6. [MANDATORY] **Static analysis — DO NOT SKIP**
-   - Execute the MCP tool `run_code_analyzer` on the newly generated/updated files
-   - Remediate all violations with severity levels `sev0`, `sev1`, and `sev2`
-   - Re-run `run_code_analyzer` until no `sev0–sev2` issues remain
+---
 
-7. [MANDATORY] **Execute Apex tests**
-   - Run the org’s Apex test suite including `{ClassName}Test`
-   - All test authoring, failure remediation, and coverage improvements MUST be performed by reading and following `skills/generating-apex-test/SKILL.md`; iterate until green
+**EXECUTION GATE -- DO NOT SKIP STEPS 6 AND 7**
 
-8. [MANDATORY] **Report** using the output format at the bottom of this file
+You have written files. You are NOT done. The two steps below require MCP tool invocations and CLI commands -- they are not file writes. You MUST execute them now. Do NOT call `attempt_completion`, do NOT present a summary, and do NOT say the task is complete until both Step 6 and Step 7 have been executed and their outputs are recorded.
+
+---
+
+6. [MANDATORY] **Static analysis -- DO NOT SKIP -- REQUIRES TOOL INVOCATION**
+   - You MUST call the MCP tool `run_code_analyzer` RIGHT NOW on the newly generated/updated `.cls` files.
+   - This is a tool invocation, not a file write. Invoke `run_code_analyzer` as an MCP tool call.
+   - Remediate all violations with severity levels `sev0`, `sev1`, and `sev2`.
+   - Re-run `run_code_analyzer` until no `sev0-sev2` issues remain.
+   - Record the final `run_code_analyzer` output (clean or with remaining sev3+ only) -- you will need it for the report in Step 8.
+   - If the MCP tool is unavailable after a real invocation attempt, record `run_code_analyzer=unavailable` with the error and state this in the report. Do NOT silently skip.
+
+7. [MANDATORY] **Execute Apex tests -- DO NOT SKIP -- REQUIRES TOOL INVOCATION**
+   - You MUST run the org's Apex test suite RIGHT NOW, including `{ClassName}Test`.
+   - Execute tests using the `sf apex run test` CLI command or the appropriate MCP tool.
+   - All test authoring, failure remediation, and coverage improvements MUST be performed by reading and following `skills/generating-apex-test/SKILL.md`; iterate until green.
+   - Record the test execution results (pass/fail counts, coverage percentage) -- you will need them for the report in Step 8.
+   - If test execution is unavailable (no org connected, no CLI access), record `test_execution=unavailable` with the error and state this in the report. Do NOT silently skip.
+
+8. [MANDATORY] **Report** -- use the output format at the bottom of this file.
+   - The `Analyzer` line MUST include actual `run_code_analyzer` output from Step 6, or explicitly state `run_code_analyzer=unavailable` with the reason.
+   - The `Testing` line MUST include actual test execution results from Step 7, or explicitly state `test_execution=unavailable` with the reason.
+   - NEVER omit the Analyzer or Testing lines. NEVER write "N/A" without having attempted the tool invocation first.
 
 9. [MANDATORY] **Enforce cross-skill boundaries**
    - Test class creation, updates, refactors, data setup, and advanced fixtures: ALWAYS delegate by reading and following `skills/generating-apex-test/SKILL.md`
@@ -92,7 +116,7 @@ If any constraint would be violated in generated code, **stop and explain the pr
 | Use Apex-native collections (`List`, `Map`, `Set`) rather than Java types | Prevent compile errors |
 | Verify methods exist in Apex before use | Prevent reliance on non-existent APIs |
 | Use `Assert` class instead of `System.assert*` in test classes | Legacy `System.assert`, `System.assertEquals`, `System.assertNotEquals` are deprecated; use `Assert.areEqual`, `Assert.isTrue`, `Assert.fail`, etc. |
-| Avoid `System.debug()` in main code paths | Debug statements that concatenate variables into the string consume CPU regardless of logging being enabled; use a logging framework or Custom Metadata–controlled logger instead if required on main code paths |
+| Avoid `System.debug()` in main code paths | Debug statements that concatenate variables into the string consume CPU regardless of logging being enabled; use a logging framework or Custom Metadata-controlled logger instead if required on main code paths |
 | Never use `@future` methods | Use Queueable with `System.Finalizer` for all async work; `@future` cannot be called from Batch, cannot chain, and cannot accept non-primitive types |
 
 ### Bulkification & Governor Limits
@@ -106,7 +130,7 @@ If any constraint would be violated in generated code, **stop and explain the pr
 ### SOQL Optimization
 
 - Use selective queries with proper `WHERE` clauses; use indexed fields (`Id`, `Name`, `OwnerId`, lookup/master-detail fields, `ExternalId` fields, custom indexes) in filters when possible
-- `SELECT *` does not exist in SOQL — always specify the exact fields needed
+- `SELECT *` does not exist in SOQL -- always specify the exact fields needed
 - Apply `LIMIT` clauses to bound result sets; use `ORDER BY` for deterministic results
 - When querying Custom Metadata Types (objects ending with `__mdt`), do NOT use SOQL — use the built-in methods (`{CustomMdt__mdt}.getAll().values()`, `getInstance()`, etc.)
 
@@ -124,8 +148,8 @@ If any constraint would be violated in generated code, **stop and explain the pr
 ### Error Handling
 
 - Catch specific exceptions before generic `Exception`; include context in messages
-- Only wrap code in `try/catch` when the enclosed statements can realistically throw — never add defensive try/catch around simple field assignments, collection additions, or arithmetic; place error handling around DML, callouts, JSON parsing, and type casting where failures are expected
-- Preserve exception cause chains: use `new CustomException('message', causedException)` — preserve the original stack trace by passing the cause rather than concatenating `e.getMessage()` into a new exception
+- Only wrap code in `try/catch` when the enclosed statements can realistically throw -- never add defensive try/catch around simple field assignments, collection additions, or arithmetic; place error handling around DML, callouts, JSON parsing, and type casting where failures are expected
+- Preserve exception cause chains: use `new CustomException('message', causedException)` -- preserve the original stack trace by passing the cause rather than concatenating `e.getMessage()` into a new exception
 - Provide a custom exception class per service domain when meaningful
 - In `@AuraEnabled` methods, catch exceptions and rethrow as `AuraHandledException`
 
@@ -190,12 +214,12 @@ Prefer current language features:
 
 - Keep each class focused on a single responsibility
 - Limit class size to 500 lines of code maximum; split into collaborating classes when exceeded
-- Use the Return Early pattern — validate preconditions at the top of methods and return/throw immediately to reduce nesting
+- Use the Return Early pattern -- validate preconditions at the top of methods and return/throw immediately to reduce nesting
 - Extract private helpers for methods longer than ~40 lines
 - Prefer interfaces for cross-class contracts to keep coupling loose
 - Use Dependency Injection (constructor or method parameters) to decouple collaborators and improve testability
 - Group related classes in packages/folders when possible (e.g., all Account-related classes together)
-- Maintain consistent abstraction levels within a method — keep orchestration separate from low-level implementation
+- Maintain consistent abstraction levels within a method -- keep orchestration separate from low-level implementation
 
 ---
 
@@ -209,7 +233,7 @@ Prefer current language features:
 | Recurring schedule | **Scheduled Flow** (preferred) or **Schedulable** | Schedulable has 100-job limit; use only when chaining to Batch or needing complex Apex logic |
 | Post-job cleanup | **Finalizer** (`System.Finalizer`) | Runs regardless of Queueable success/failure |
 | Long-running callouts | **Continuation** | Up to 3 per transaction, 3 parallel |
-| Legacy fire-and-forget | `@future` | **Do not use** — replace with Queueable + Finalizer in all new development |
+| Legacy fire-and-forget | `@future` | **Do not use** -- replace with Queueable + Finalizer in all new development |
 | Delays > 10 minutes | `System.scheduleBatch()` | Schedule a Batch job at a specific future time |
 
 ---
@@ -222,9 +246,9 @@ Prefer current language features:
 - Wrap business errors in a custom exception (e.g., `AccountServiceException`)
 
 ### Selector
-- `inherited sharing` (inherits from caller — allows reuse from both `with` and `without sharing` contexts)
+- `inherited sharing` (inherits from caller -- allows reuse from both `with` and `without sharing` contexts)
 - One Selector per SObject or query domain
-- Return `List<SObject>` or `Map<Id, SObject>`; maintain a DRY base field list constant and reference it in all SOQL queries — never duplicate the field list inline across methods constant and reference it in all SOQL queries — never duplicate the field list inline across methods
+- Return `List<SObject>` or `Map<Id, SObject>`; maintain a DRY base field list constant and reference it in all SOQL queries -- never duplicate the field list inline across methods
 - Accept filter criteria as parameters; always include `WITH USER_MODE`
 
 ### Domain
@@ -236,7 +260,7 @@ Prefer current language features:
 - `with sharing`; implement `Database.Batchable<SObject>` (add `Database.Stateful` when tracking results across chunks)
 - Keep `start()` focused on query definition; place business logic in `execute()`
 - Use `QueryLocator` for large datasets; handle partial failures via `Database.SaveResult`
-- Provide a meaningful `finish()` — at minimum logging; consider notifications
+- Provide a meaningful `finish()` -- at minimum logging; consider notifications
 - Accept filter parameters via constructor to make the batch reusable
 
 ### Queueable
@@ -246,7 +270,7 @@ Prefer current language features:
 - Use `AsyncOptions` for configurable delay (up to 10 min) and dedup signatures
 
 ### Schedulable
-- `with sharing`; keep `execute()` lightweight — delegate to a Queueable or Batch
+- `with sharing`; keep `execute()` lightweight -- delegate to a Queueable or Batch
 - Provide CRON expression constants; document schedule intent
 - Provide a convenience `scheduleDaily()` or similar static helper
 
@@ -285,20 +309,20 @@ Prefer current language features:
 
 ### Invocable Method (`@InvocableMethod`)
 - `with sharing`; use inner `Request`/`Response` classes with `@InvocableVariable`
-- Accept `List<Request>`, return `List<Response>`; bulkify — query and DML outside loops
+- Accept `List<Request>`, return `List<Response>`; bulkify -- query and DML outside loops
 - Always include `isSuccess` (Boolean) and `errorMessage` (String) in Response
 - Return errors in Response rather than throwing exceptions (exceptions trigger Flow fault path)
 - Limit supported `@InvocableVariable` types to primitives, `Id`, `SObject`, and `List<T>` (types such as `Map`, `Set`, and `Blob` are not supported)
 
 ### REST Resource (`@RestResource`)
-- `global with sharing`; `global` is required for Apex REST endpoints — both the class and annotated methods must be `global`
+- `global with sharing`; `global` is required for Apex REST endpoints -- both the class and annotated methods must be `global`
 - Use versioned URL mapping: `@RestResource(urlMapping='/{resource}/v1/*')` for future API evolution
 - Parse `RestContext.request` directly in methods for flexibility; use `void` methods with `RestContext.response` when fine-grained status code control is needed, or return a response DTO for automatic serialization
-- Return appropriate HTTP status codes per logic branch: `200` success, `201` created, `400` bad request, `404` not found, `422` validation failure, `500` internal error — never default to `500` for all errors
+- Return appropriate HTTP status codes per logic branch: `200` success, `201` created, `400` bad request, `404` not found, `422` validation failure, `500` internal error -- never default to `500` for all errors
 - Validate incoming parameters; use `Pattern.matches('[a-zA-Z0-9]{15,18}', value)` for Id format validation; escape/bind all user input in SOQL
 - Always include `LIMIT` and `ORDER BY` in SOQL queries; implement pagination via `pageSize`/`offset` query parameters with a reasonable max page size
 - Use `WITH USER_MODE` in all SOQL for CRUD/FLS enforcement; combine with `with sharing` for record-level security
-- Design endpoints to handle bulk operations efficiently — accept and return collections where appropriate
+- Design endpoints to handle bulk operations efficiently -- accept and return collections where appropriate
 - Provide a standardized `ApiResponse` wrapper with `success`, `message`, and `data`/`records` fields for consistent client parsing
 - Include inner request/response DTO classes to define the API contract clearly
 - Delegate business logic to Service classes; keep the REST resource as a thin controller layer
@@ -334,10 +358,10 @@ Report in this order:
 Apex work: <summary>
 Files: <paths>
 Design: <pattern / framework choices>
-Workflow: all mandatory steps completed (1–9); any N/A justified
+Workflow: all mandatory steps completed (1-9); any N/A justified
 Risks: <security, bulkification, async, dependency notes>
-Analyzer: run_code_analyzer clean (sev0–sev2 remediated)
-Testing: Apex tests executed; failures fixed or delegated via skills/generating-apex-test
+Analyzer: <REQUIRED -- paste actual run_code_analyzer output or state "run_code_analyzer=unavailable: <reason>">
+Testing: <REQUIRED -- paste actual test execution results (pass/fail, coverage) or state "test_execution=unavailable: <reason>">
 Deploy: <dry-run or next step>
 ```
 
@@ -376,22 +400,22 @@ Full guide: [troubleshooting](references/troubleshooting.md)
 ## Reference Map
 
 ### Core guides
-- [security guide](references/security-guide.md) — CRUD/FLS, sharing, SOQL injection, Named Credentials
-- [bulkification guide](references/bulkification-guide.md) — governor limits, collection patterns, performance monitoring
+- [security guide](references/security-guide.md) -- CRUD/FLS, sharing, SOQL injection, Named Credentials
+- [bulkification guide](references/bulkification-guide.md) -- governor limits, collection patterns, performance monitoring
 
 ### Checklists & catalogs
-- [anti-patterns](references/anti-patterns.md) — critical anti-patterns, code smells, and refactoring strategies
-- [naming conventions](references/naming-conventions.md) — class, method, variable, collection naming
-- [llm anti-patterns](references/llm-anti-patterns.md) — hallucinated methods, Java types, null safety pitfalls
+- [anti-patterns](references/anti-patterns.md) -- critical anti-patterns, code smells, and refactoring strategies
+- [naming conventions](references/naming-conventions.md) -- class, method, variable, collection naming
+- [llm anti-patterns](references/llm-anti-patterns.md) -- hallucinated methods, Java types, null safety pitfalls
 
 ### Specialized patterns
-- [trigger-actions-framework](references/trigger-actions-framework.md) — TAF setup, action classes, bypass, recursion
-- [automation-density guide](references/automation-density-guide.md) — Flow vs Apex vs hybrid decision framework
-- [flow integration](references/flow-integration.md) — `@InvocableMethod` / `@InvocableVariable` patterns
-- [triangle pattern](references/triangle-pattern.md) — Flow-LWC-Apex integration (Apex perspective)
-- [design patterns](references/design-patterns.md) — Factory, Strategy, Singleton, Builder, Decorator, Observer, Command, Facade, Domain, UoW
-- [solid principles](references/solid-principles.md) — SRP, OCP, LSP, ISP, DIP in Apex
+- [trigger-actions-framework](references/trigger-actions-framework.md) -- TAF setup, action classes, bypass, recursion
+- [automation-density guide](references/automation-density-guide.md) -- Flow vs Apex vs hybrid decision framework
+- [flow integration](references/flow-integration.md) -- `@InvocableMethod` / `@InvocableVariable` patterns
+- [triangle pattern](references/triangle-pattern.md) -- Flow-LWC-Apex integration (Apex perspective)
+- [design patterns](references/design-patterns.md) -- Factory, Strategy, Singleton, Builder, Decorator, Observer, Command, Facade, Domain, UoW
+- [solid principles](references/solid-principles.md) -- SRP, OCP, LSP, ISP, DIP in Apex
 
 ### Additional references
-- [best practices](references/best-practices.md) — platform cache, static caching, guard clauses, comment guidelines
-- [troubleshooting](references/troubleshooting.md) — LSP validation, deployment errors, debug logs, governor limit debugging
+- [best practices](references/best-practices.md) -- platform cache, static caching, guard clauses, comment guidelines
+- [troubleshooting](references/troubleshooting.md) -- LSP validation, deployment errors, debug logs, governor limit debugging
