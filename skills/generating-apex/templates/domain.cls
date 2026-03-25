@@ -2,7 +2,6 @@
  * Domain class for {SObject}.
  *              Encapsulates field-level defaults, derivations, and validations.
  *              Operates only on in-memory SObject data — no SOQL or DML.
- * @author {Author}
  */
 public with sharing class {SObject}Domain {
 

@@ -2,7 +2,6 @@
  * Batch Apex class for {describe the batch operation}.
  * Processes {SObject} records in configurable batch sizes.
  * Implements Database.Stateful to track cumulative results across chunks.
- * @author {Author}
  *
  * @example
  * // Execute with default batch size

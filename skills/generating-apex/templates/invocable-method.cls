@@ -1,8 +1,6 @@
 /**
  * Invocable Apex for Flow/Process Builder integration
  *              Exposes business logic as a Flow Action
- * @author {{Author}}
- * @date {{Date}}
  *
  * FLOW USAGE:
  * 1. Add Action element in Flow Builder

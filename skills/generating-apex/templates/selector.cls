@@ -2,7 +2,6 @@
  * Selector class for {SObject} queries.
  *              Encapsulates all SOQL for {SObject} records.
  *              All methods return bulkified results (Lists or Maps).
- * @author {Author}
  */
 public inherited sharing class {SObject}Selector {
 

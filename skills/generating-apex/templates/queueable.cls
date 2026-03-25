@@ -2,7 +2,6 @@
  * Queueable Apex class for {describe the async operation}.
  *              Accepts data through the constructor for stateful processing.
  *              Optionally implements Database.AllowsCallouts for external integrations.
- * @author {Author}
  *
  * @example
  * // Enqueue the job

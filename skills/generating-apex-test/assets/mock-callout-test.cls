@@ -1,8 +1,6 @@
 /**
  * Test class for external API callouts using mock framework
  *              Demonstrates HttpCalloutMock and WebServiceMock patterns.
- * @author      {{Author}}
- * @created     {{Date}}
  */
 @IsTest
 private class {{ClassName}}CalloutTest {

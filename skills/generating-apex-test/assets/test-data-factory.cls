@@ -8,9 +8,6 @@
  *
  *   // Or with auto-insert:
  *   List<Account> accounts = TestDataFactory.createAndInsertAccounts(5);
- *
- * @author      {{Author}}
- * @created     {{Date}}
  */
 @IsTest
 public class TestDataFactory {

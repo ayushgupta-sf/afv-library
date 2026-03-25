@@ -2,7 +2,6 @@
  * Controller for {ComponentName} Lightning Web Component.
  * Exposes server-side operations to LWC via @AuraEnabled methods.
  * All queries use WITH USER_MODE for CRUD/FLS enforcement.
- * @author {Author}
  */
 public with sharing class {ClassName}Controller {
 

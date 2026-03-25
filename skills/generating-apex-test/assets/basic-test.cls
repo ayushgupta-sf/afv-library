@@ -1,8 +1,6 @@
 /**
  * Test class for {{ClassName}}
  *              Tests core functionality with positive, negative, and bulk scenarios.
- * @author      {{Author}}
- * @created     {{Date}}
  * @coverage    Target: 90%+
  */
 @IsTest

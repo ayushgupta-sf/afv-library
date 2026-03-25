@@ -2,7 +2,6 @@
  * Service class for {SObject} business logic.
  *              Follows separation of concerns: delegates queries to {SObject}Selector
  *              and SObject manipulation to {SObject}Domain where applicable.
- * @author {Author}
  */
 public with sharing class {SObject}Service {
 

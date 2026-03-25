@@ -2,7 +2,6 @@
  * Utility class for {describe the category of utilities: String, Date, Collection, etc.}.
  *              All methods are static and side-effect-free (no SOQL, no DML).
  *              Private constructor prevents instantiation.
- * @author {Author}
  */
 public class {ClassName} {
 

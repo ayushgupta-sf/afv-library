@@ -2,8 +2,6 @@
  * Bulk testing template for trigger and service validation
  *              Tests with 251+ records to ensure bulkification compliance.
  *              251 records crosses the 200-record trigger batch boundary.
- * @author      {{Author}}
- * @created     {{Date}}
  */
 @IsTest
 private class {{ClassName}}BulkTest {

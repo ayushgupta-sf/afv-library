@@ -2,7 +2,6 @@
  * Data Transfer Object for {describe the data this DTO represents}.
  *              Used to pass structured data between layers without exposing SObjects.
  *              Serialization-friendly for use with JSON.serialize/deserialize and API responses.
- * @author {Author}
  *
  * @example
  * // Create from constructor

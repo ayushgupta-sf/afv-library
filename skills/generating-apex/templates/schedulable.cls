@@ -1,8 +1,7 @@
 /**
  * Schedulable Apex class for {describe the scheduled operation}.
- *              Delegates heavy processing to a Batch or Queueable job.
- *              Keep execute() lightweight — it should only launch other jobs.
- * @author {Author}
+ * Delegates heavy processing to a Batch or Queueable job.
+ * Keep execute() lightweight — it should only launch other jobs.
  *
  * @example
  * // Schedule to run daily at 2 AM

@@ -2,7 +2,6 @@
  * Trigger Action for {SObject}: {ActionDescription}.
  *              Implements TriggerAction.{Context} from the Trigger Actions Framework.
  *              Register via Trigger_Action__mdt custom metadata to activate.
- * @author {Author}
  *
  * @example
  * Trigger_Action__mdt record:
