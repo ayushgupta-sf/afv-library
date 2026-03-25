@@ -1,8 +1,7 @@
 /**
- * @description Custom exception for {describe when this exception is thrown}.
+ * Custom exception for {describe when this exception is thrown}.
  *              Use this exception to signal domain-specific errors that callers
  *              can catch and handle distinctly from system exceptions.
- * @author {Author}
  *
  * @example
  * throw new {ClassName}('Account merge failed: duplicate detected.');

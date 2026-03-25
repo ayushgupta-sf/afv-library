@@ -1,8 +1,6 @@
 /**
- * @description Test class for external API callouts using mock framework
+ * Test class for external API callouts using mock framework
  *              Demonstrates HttpCalloutMock and WebServiceMock patterns.
- * @author      {{Author}}
- * @created     {{Date}}
  */
 @IsTest
 private class {{ClassName}}CalloutTest {
@@ -12,7 +10,7 @@ private class {{ClassName}}CalloutTest {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * @description Mock for successful HTTP response (200 OK)
+     * Mock for successful HTTP response (200 OK)
      */
     private class SuccessMock implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest req) {
@@ -33,7 +31,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Mock for error HTTP response (500 Internal Server Error)
+     * Mock for error HTTP response (500 Internal Server Error)
      */
     private class ErrorMock implements HttpCalloutMock {
         private Integer statusCode;
@@ -58,7 +56,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Mock for timeout simulation
+     * Mock for timeout simulation
      */
     private class TimeoutMock implements HttpCalloutMock {
         public HttpResponse respond(HttpRequest req) {
@@ -68,7 +66,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Mock that validates request parameters
+     * Mock that validates request parameters
      */
     private class ValidatingMock implements HttpCalloutMock {
         private String expectedEndpoint;
@@ -97,7 +95,7 @@ private class {{ClassName}}CalloutTest {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * @description Tests successful API call returns expected data
+     * Tests successful API call returns expected data
      */
     @IsTest
     static void testCallout_Success_ReturnsData() {
@@ -123,7 +121,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Tests POST request with body
+     * Tests POST request with body
      */
     @IsTest
     static void testCallout_PostWithBody_Success() {
@@ -154,7 +152,7 @@ private class {{ClassName}}CalloutTest {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * @description Tests handling of 400 Bad Request
+     * Tests handling of 400 Bad Request
      */
     @IsTest
     static void testCallout_BadRequest_HandlesGracefully() {
@@ -178,7 +176,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Tests handling of 500 Internal Server Error
+     * Tests handling of 500 Internal Server Error
      */
     @IsTest
     static void testCallout_ServerError_HandlesGracefully() {
@@ -198,7 +196,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Tests handling of timeout exception
+     * Tests handling of timeout exception
      */
     @IsTest
     static void testCallout_Timeout_ThrowsException() {
@@ -221,7 +219,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Tests handling of 401 Unauthorized
+     * Tests handling of 401 Unauthorized
      */
     @IsTest
     static void testCallout_Unauthorized_HandlesGracefully() {
@@ -245,7 +243,7 @@ private class {{ClassName}}CalloutTest {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * @description Verifies correct endpoint and method are used
+     * Verifies correct endpoint and method are used
      */
     @IsTest
     static void testCallout_ValidatesRequestParameters() {
@@ -270,7 +268,7 @@ private class {{ClassName}}CalloutTest {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * @description Tests @future method with callout
+     * Tests @future method with callout
      *              Note: Must use Test.startTest/stopTest to execute @future
      */
     @IsTest
@@ -289,7 +287,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Tests Queueable with callout
+     * Tests Queueable with callout
      */
     @IsTest
     static void testQueueableCallout_ExecutesSuccessfully() {
@@ -311,7 +309,7 @@ private class {{ClassName}}CalloutTest {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * @description Mock for multiple sequential callouts
+     * Mock for multiple sequential callouts
      */
     private class MultiCalloutMock implements HttpCalloutMock {
         private Integer callCount = 0;
@@ -326,7 +324,7 @@ private class {{ClassName}}CalloutTest {
     }
 
     /**
-     * @description Tests multiple callouts in sequence (limit: 100 per transaction)
+     * Tests multiple callouts in sequence (limit: 100 per transaction)
      */
     @IsTest
     static void testMultipleCallouts_AllSucceed() {

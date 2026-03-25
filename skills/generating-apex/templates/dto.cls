@@ -1,8 +1,7 @@
 /**
- * @description Data Transfer Object for {describe the data this DTO represents}.
+ * Data Transfer Object for {describe the data this DTO represents}.
  *              Used to pass structured data between layers without exposing SObjects.
  *              Serialization-friendly for use with JSON.serialize/deserialize and API responses.
- * @author {Author}
  *
  * @example
  * // Create from constructor
@@ -15,16 +14,16 @@ public class {ClassName} {
 
     // ─── Properties ──────────────────────────────────────────────────────
 
-    /** @description {Describe this property} */
+    /** {Describe this property} */
     public String name { get; set; }
 
-    /** @description {Describe this property} */
+    /** {Describe this property} */
     public Id recordId { get; set; }
 
-    /** @description {Describe this property} */
+    /** {Describe this property} */
     public Boolean isActive { get; set; }
 
-    /** @description {Describe this property} */
+    /** {Describe this property} */
     public List<String> tags { get; set; }
 
     // TODO: Add additional properties as needed
@@ -32,7 +31,7 @@ public class {ClassName} {
     // ─── Constructors ────────────────────────────────────────────────────
 
     /**
-     * @description No-arg constructor for deserialization compatibility
+     * No-arg constructor for deserialization compatibility
      */
     public {ClassName}() {
         this.tags = new List<String>();
@@ -40,7 +39,7 @@ public class {ClassName} {
     }
 
     /**
-     * @description Parameterized constructor for convenience
+     * Parameterized constructor for convenience
      * @param name The name value
      * @param recordId The associated record Id
      */
@@ -53,7 +52,7 @@ public class {ClassName} {
     // ─── Factory Methods ─────────────────────────────────────────────────
 
     /**
-     * @description Creates a DTO instance from an SObject record
+     * Creates a DTO instance from an SObject record
      * @param record The source {SObject} record
      * @return A populated {ClassName} instance
      */
@@ -71,7 +70,7 @@ public class {ClassName} {
     }
 
     /**
-     * @description Creates a list of DTOs from a list of SObject records
+     * Creates a list of DTOs from a list of SObject records
      * @param records The source records
      * @return List of populated {ClassName} instances
      */
@@ -90,7 +89,7 @@ public class {ClassName} {
     // ─── Utility Methods ─────────────────────────────────────────────────
 
     /**
-     * @description Serializes this DTO to a JSON string
+     * Serializes this DTO to a JSON string
      * @return JSON representation of this DTO
      */
     public String toJson() {
@@ -98,7 +97,7 @@ public class {ClassName} {
     }
 
     /**
-     * @description Deserializes a JSON string into a {ClassName} instance
+     * Deserializes a JSON string into a {ClassName} instance
      * @param jsonString The JSON string to deserialize
      * @return A {ClassName} instance
      */

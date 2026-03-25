@@ -1,8 +1,7 @@
 /**
- * @description Service class for {SObject} business logic.
+ * Service class for {SObject} business logic.
  *              Follows separation of concerns: delegates queries to {SObject}Selector
  *              and SObject manipulation to {SObject}Domain where applicable.
- * @author {Author}
  */
 public with sharing class {SObject}Service {
 
@@ -12,7 +11,7 @@ public with sharing class {SObject}Service {
     // ─── Public API ──────────────────────────────────────────────────────
 
     /**
-     * @description {Describe the primary operation}
+     * {Describe the primary operation}
      * @param recordIds Set of {SObject} Ids to process
      * @return List of processed {SObject} records
      * @throws {SObject}ServiceException if processing fails
@@ -47,7 +46,7 @@ public with sharing class {SObject}Service {
     // ─── Convenience Overloads ───────────────────────────────────────────
 
     /**
-     * @description Single-record convenience overload
+     * Single-record convenience overload
      * @param recordId The {SObject} Id to process
      * @return The processed {SObject} record
      */
@@ -63,7 +62,7 @@ public with sharing class {SObject}Service {
     // ─── Exception ───────────────────────────────────────────────────────
 
     /**
-     * @description Custom exception for {SObject}Service errors
+     * Custom exception for {SObject}Service errors
      */
     public class {SObject}ServiceException extends Exception {}
 }

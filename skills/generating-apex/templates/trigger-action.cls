@@ -1,8 +1,7 @@
 /**
- * @description Trigger Action for {SObject}: {ActionDescription}.
+ * Trigger Action for {SObject}: {ActionDescription}.
  *              Implements TriggerAction.{Context} from the Trigger Actions Framework.
  *              Register via Trigger_Action__mdt custom metadata to activate.
- * @author {Author}
  *
  * @example
  * Trigger_Action__mdt record:
@@ -14,7 +13,7 @@
 public with sharing class TA_{SObject}_{ActionName} implements TriggerAction.BeforeInsert {
 
     /**
-     * @description Executes before insert logic for {SObject} records
+     * Executes before insert logic for {SObject} records
      * @param newList List of new {SObject} records being inserted
      */
     public void beforeInsert(List<{SObject}> newList) {

@@ -1,8 +1,7 @@
 /**
- * @description Queueable Apex class for {describe the async operation}.
+ * Queueable Apex class for {describe the async operation}.
  *              Accepts data through the constructor for stateful processing.
  *              Optionally implements Database.AllowsCallouts for external integrations.
- * @author {Author}
  *
  * @example
  * // Enqueue the job
@@ -20,7 +19,7 @@ public with sharing class {ClassName} implements Queueable /*, Database.AllowsCa
     // ─── Constructors ────────────────────────────────────────────────────
 
     /**
-     * @description Creates a new queueable job to process the specified records
+     * Creates a new queueable job to process the specified records
      * @param recordIds Set of record Ids to process
      */
     public {ClassName}(Set<Id> recordIds) {
@@ -28,7 +27,7 @@ public with sharing class {ClassName} implements Queueable /*, Database.AllowsCa
     }
 
     /**
-     * @description Creates a new queueable job with chain depth tracking
+     * Creates a new queueable job with chain depth tracking
      * @param recordIds Set of record Ids to process
      * @param chainDepth Current depth in the queueable chain
      */
@@ -40,7 +39,7 @@ public with sharing class {ClassName} implements Queueable /*, Database.AllowsCa
     // ─── Queueable Interface ─────────────────────────────────────────────
 
     /**
-     * @description Executes the asynchronous work
+     * Executes the asynchronous work
      * @param context The queueable context
      */
     public void execute(QueueableContext context) {
@@ -64,7 +63,7 @@ public with sharing class {ClassName} implements Queueable /*, Database.AllowsCa
     // ─── Private Helpers ─────────────────────────────────────────────────
 
     /**
-     * @description Chains to the next queueable job if needed, with depth guard
+     * Chains to the next queueable job if needed, with depth guard
      */
     private void chainIfNeeded() {
         // TODO: Determine if chaining is needed (e.g., remaining records to process)
@@ -78,7 +77,7 @@ public with sharing class {ClassName} implements Queueable /*, Database.AllowsCa
     }
 
     /**
-     * @description Handles errors during execution
+     * Handles errors during execution
      * @param jobId The async job Id
      * @param e The exception that occurred
      */
