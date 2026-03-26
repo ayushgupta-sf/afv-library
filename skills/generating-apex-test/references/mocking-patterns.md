@@ -2,8 +2,6 @@
 
 This guide covers mocking and stubbing patterns that enable true unit testing in Apex. By replacing database operations and external services with mock implementations, you can write fast, isolated, reliable tests.
 
-> **Sources**: [Beyond the Cloud](https://blog.beyondthecloud.dev/blog/salesforce-mock-in-apex-tests), [James Simone](https://www.jamessimone.net/blog/joys-of-apex/mocking-dml/), [Trailhead](https://trailhead.salesforce.com/content/learn/modules/unit-testing-on-the-lightning-platform/mock-stub-objects)
-
 ---
 
 ## Mocking vs Stubbing
@@ -28,8 +26,6 @@ Salesforce **requires** mock callouts - you cannot make real HTTP requests in te
 ```apex
 /**
  * Simple HTTP mock returning a fixed response
- *
- * @see https://www.apexhours.com/testing-web-services-callouts-in-salesforce/
  */
 @IsTest
 public class MockHttpResponse implements HttpCalloutMock {
@@ -53,7 +49,7 @@ public class MockHttpResponse implements HttpCalloutMock {
 
 // Usage in test
 @IsTest
-static void testApiCall_Success() {
+static void shouldReturnData_WhenApiCallSucceeds() {
     String mockBody = '{"success": true, "data": {"id": "12345"}}';
     Test.setMock(HttpCalloutMock.class, new MockHttpResponse(200, mockBody));
 
@@ -102,7 +98,7 @@ public class MultiEndpointMock implements HttpCalloutMock {
  * Mock for testing error handling
  */
 @IsTest
-static void testApiCall_ServerError_HandlesGracefully() {
+static void shouldHandleGracefully_WhenServerReturnsError() {
     Test.setMock(HttpCalloutMock.class, new MockHttpResponse(500, '{"error": "Server Error"}'));
 
     Test.startTest();
@@ -127,8 +123,6 @@ This pattern eliminates database operations from tests, achieving 35x faster exe
 ```apex
 /**
  * Interface for DML operations - enables mocking
- *
- * @see https://www.jamessimone.net/blog/joys-of-apex/mocking-dml/
  */
 public interface IDML {
     void doInsert(SObject record);
@@ -307,7 +301,7 @@ public class AccountService {
 
 // Test using mock DML
 @IsTest
-static void testCreateAccount_NoDatabase() {
+static void shouldCreateAccount_WithMockDML() {
     // Arrange
     DMLMock.reset();
     AccountService service = new AccountService(new DMLMock());
@@ -393,7 +387,7 @@ public class AccountServiceStub implements System.StubProvider {
 ```apex
 // Create stub with Test.createStub()
 @IsTest
-static void testWithStub() {
+static void shouldReturnConfiguredValues_WhenUsingStub() {
     // Create the stub
     AccountServiceStub stub = new AccountServiceStub()
         .withMethodReturn('getAccountCount', 42);
@@ -450,7 +444,7 @@ public class AccountSelector {
 
 // Usage in test
 @IsTest
-static void testWithMockedQuery() {
+static void shouldReturnMockData_WhenQueryMocked() {
     // Arrange - no database insert needed!
     List<Account> mockAccounts = new List<Account>{
         new Account(Name = 'Mock 1', Industry = 'Tech'),

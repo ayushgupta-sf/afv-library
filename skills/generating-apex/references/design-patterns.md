@@ -896,9 +896,6 @@ if (result.success) {
 
 ## Domain Class Pattern
 
-> 💡 *Principles inspired by "Clean Apex Code" by Pablo Gonzalez.
-> [Purchase the book](https://link.springer.com/book/10.1007/979-8-8688-1411-2) for complete coverage.*
-
 ### Purpose
 
 Encapsulate business rules in domain-specific classes, making code read like plain English and enabling reuse across the application.
@@ -990,9 +987,6 @@ public void processOpportunity(Opportunity opp, Account account) {
 ---
 
 ## Abstraction Level Management
-
-> 💡 *Principles inspired by "Clean Apex Code" by Pablo Gonzalez.
-> [Purchase the book](https://link.springer.com/book/10.1007/979-8-8688-1411-2) for complete coverage.*
 
 ### Purpose
 

@@ -2,8 +2,6 @@
 
 Fast tests enable faster development. When test suites run quickly, developers refactor confidently. This guide covers techniques to dramatically reduce test execution time.
 
-> **Source**: [James Simone - Writing Performant Apex Tests](https://www.jamessimone.net/blog/joys-of-apex/writing-performant-apex-tests/)
-
 ---
 
 ## Why Test Speed Matters
@@ -172,7 +170,7 @@ List<List<SObject>> results = [FIND 'test' IN ALL FIELDS RETURNING Account];
 
 // ✅ SOLUTION: Use Test.setFixedSearchResults()
 @IsTest
-static void testSearch() {
+static void Search_WithFixedResults_FindsRecord() {
     Account acc = new Account(Name = 'Searchable');
     insert acc;
 
@@ -201,7 +199,7 @@ sf apex run test --test-level RunLocalTests --target-org sandbox
 sf apex run test --class-names MyClassTest --target-org sandbox
 
 # ✅ FASTER: Run single test method
-sf apex run test --tests MyClassTest.testSpecificMethod --target-org sandbox
+sf apex run test --tests MyClassTest.ProcessRecords_Success --target-org sandbox
 ```
 
 ---
@@ -251,7 +249,7 @@ Before committing tests, verify:
 
 ```apex
 @IsTest
-static void testPerformance() {
+static void shouldCompleteInUnderOneSecond() {
     Long startTime = System.currentTimeMillis();
 
     // Your test code here

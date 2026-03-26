@@ -3,8 +3,6 @@
  *
  * Enables true unit testing by replacing database operations with in-memory tracking.
  * Tests using this pattern run ~35x faster than tests with actual DML.
- *
- * @see https://www.jamessimone.net/blog/joys-of-apex/mocking-dml/
  */
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -298,7 +296,7 @@ public class AccountService {
 private class AccountServiceTest {
 
     @IsTest
-    static void testCreateAccount_Success() {
+    static void CreateAccount_ValidInput_Success() {
         // Arrange
         DMLMock.reset();
         AccountService service = new AccountService(new DMLMock());
@@ -320,7 +318,7 @@ private class AccountServiceTest {
     }
 
     @IsTest
-    static void testCreateAccount_NullInput_ThrowsException() {
+    static void CreateAccount_NullInput_ThrowsException() {
         // Arrange
         DMLMock.reset();
         AccountService service = new AccountService(new DMLMock());

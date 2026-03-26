@@ -44,7 +44,6 @@ All steps in this workflow are MANDATORY and must be executed in order. Execute 
 
 **CRITICAL -- WORKFLOW INTEGRITY RULES:**
 - NEVER remove, rename, or consolidate checklist items from your task progress. Every step listed below must appear in task_progress from start to finish.
-- NEVER replace specific step names (e.g., "Run static analysis", "Execute tests") with vague alternatives (e.g., "Complete workflow", "Finalize").
 - The task is NOT complete after writing files. Writing `.cls` and `.cls-meta.xml` files is the MIDPOINT of this workflow, not the end. Steps 6 and 7 are mandatory tool invocations that MUST execute before completion.
 - NEVER call `attempt_completion` or present a final summary until Steps 6, 7, and 8 are all executed and documented with their actual tool outputs.
 
@@ -63,7 +62,7 @@ All steps in this workflow are MANDATORY and must be executed in order. Execute 
    - Generate `{ClassName}.cls` with ApexDoc
    - Generate `{ClassName}.cls-meta.xml`
 
-5. [MANDATORY] **Generate test classes** -- Use the skill `generating-apex-test` and follow its complete workflow to generate `{ClassName}Test.cls` and `{ClassName}Test.cls-meta.xml`. You MUST use that skill now and execute its instructions before proceeding to Step 6. After the test skill workflow completes, return here and continue with Step 6 -- do NOT end the task.
+5. [MANDATORY] **Generate test classes** -- STOP: Do not write any apex test code in this skill. Immediately activate `generating-apex-test` skill and follow its complete workflow to generate `{ClassName}Test.cls` and `{ClassName}Test.cls-meta.xml`. Only return here after that skill reports completion; if activation is unavailable, abort this step and record `test_skill=unavailable: <reason>` in Step 8.
 
 ---
 
@@ -73,18 +72,18 @@ You have written files. You are NOT done. The two steps below require MCP tool i
 
 ---
 
-6. [MANDATORY] **Static analysis -- DO NOT SKIP -- REQUIRES TOOL INVOCATION**
-   - You MUST call the MCP tool `run_code_analyzer` RIGHT NOW on the newly generated/updated `.cls` files.
+6. [MANDATORY] **run_code_analyzer MCP tool -- DO NOT SKIP -- REQUIRES TOOL INVOCATION**
+   - You MUST call the MCP tool `run_code_analyzer` RIGHT NOW to performe static analysis against code on the newly generated/updated `.cls` files.
    - This is a tool invocation, not a file write. Invoke `run_code_analyzer` as an MCP tool call.
    - Remediate all violations with severity levels `sev0`, `sev1`, and `sev2`.
    - Re-run `run_code_analyzer` until no `sev0-sev2` issues remain.
    - Record the final `run_code_analyzer` output (clean or with remaining sev3+ only) -- you will need it for the report in Step 8.
-   - If the MCP tool is unavailable after a real invocation attempt, record `run_code_analyzer=unavailable` with the error and state this in the report. Do NOT silently skip.
+   - If the MCP tool is unavailable after a real invocation attempt cli command `sf code-analyzer run --target <target>`, if that also doesnt work record `run_code_analyzer=unavailable` with the error and state this in the report. Do NOT silently skip.
 
 7. [MANDATORY] **Execute Apex tests -- DO NOT SKIP -- REQUIRES TOOL INVOCATION**
    - You MUST run the org's Apex test suite RIGHT NOW, including `{ClassName}Test`.
    - Execute tests using the `sf apex run test` CLI command or the appropriate MCP tool.
-   - All test authoring, failure remediation, and coverage improvements MUST be performed by reading and following `skills/generating-apex-test/SKILL.md`; iterate until green.
+   - All test authoring, failure remediation, and coverage improvements MUST be performed by reading and following `generating-apex-test` skill; iterate until green.
    - Record the test execution results (pass/fail counts, coverage percentage) -- you will need them for the report in Step 8.
    - If test execution is unavailable (no org connected, no CLI access), record `test_execution=unavailable` with the error and state this in the report. Do NOT silently skip.
 
@@ -94,7 +93,7 @@ You have written files. You are NOT done. The two steps below require MCP tool i
    - NEVER omit the Analyzer or Testing lines. NEVER write "N/A" without having attempted the tool invocation first.
 
 9. [MANDATORY] **Enforce cross-skill boundaries**
-   - Test class creation, updates, refactors, data setup, and advanced fixtures: ALWAYS delegate by reading and following `skills/generating-apex-test/SKILL.md`
+   - Test class creation, updates, refactors, data setup, and advanced fixtures: ALWAYS delegate by reading and following `generating-apex-test` skill
    - NEVER write test code directly in this skill; all test work flows through the test skill
 
 ---
@@ -339,8 +338,8 @@ Prefer current language features:
 Deliverables per class:
 - `{ClassName}.cls`
 - `{ClassName}.cls-meta.xml` (default API version `66.0` or higher unless specified)
-- `{ClassName}Test.cls` (generated via `skills/generating-apex-test/SKILL.md`)
-- `{ClassName}Test.cls-meta.xml` (generated via `skills/generating-apex-test/SKILL.md`)
+- `{ClassName}Test.cls` (generated via `generating-apex-test` skill)
+- `{ClassName}Test.cls-meta.xml` (generated via `generating-apex-test` skill)
 
 Meta XML template:
 
@@ -373,7 +372,7 @@ Deploy: <dry-run or next step>
 |---|---|---|
 | Describe objects / fields first | metadata skill | Ensure alignment with the correct schema |
 | Seed bulk or edge-case data | data skill | Create realistic datasets |
-| Run Apex tests / fix failing tests | Read and follow `skills/generating-apex-test/SKILL.md` | Execute and iterate on failures |
+| Run Apex tests / fix failing tests | Read and follow `generating-apex-test` skill | Execute and iterate on failures |
 | Deploy to org | deploy skill | Validation and deployment orchestration |
 | Build Flow that calls Apex | Flow skill | Declarative orchestration via `@InvocableMethod` |
 | Build LWC that calls Apex | LWC skill | UI/controller integration via `@AuraEnabled` |

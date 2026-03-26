@@ -37,6 +37,22 @@ Before generating or fixing tests, identify:
 
 Apply the structure, naming conventions, and patterns below. Reference the appropriate asset templates and reference docs for the component type.
 
+**MANDATORY — File Deliverables:** For every test class you generate, you MUST create BOTH files:
+1. `{ClassName}Test.cls` — the test class source
+2. `{ClassName}Test.cls-meta.xml` — the accompanying metadata file (use the meta XML template below)
+
+Never create the `.cls` without its `.cls-meta.xml`. Both files are required for deployment.
+
+Meta XML template for test classes:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <status>Active</status>
+</ApexClass>
+```
+
 #### Test Class Structure
 
 ```apex
@@ -88,12 +104,17 @@ private class MyServiceTest {
 
 #### Naming Convention
 
-Use descriptive method names: `test[SubjectOrAction]_[Scenario]_[ExpectedResult]`
+Use descriptive method names following one of these patterns:
 
-- `testAccountUpdate_ChangeName_Success`
-- `testEmailValidation_InvalidFormat_ThrowsException`
-- `testOpportunity_ClosedWon_SendsNotification`
-- `testBatchExecution_RunningAsBatch_TriggerBypassed`
+- `[SubjectOrAction]_[Scenario]_[ExpectedResult]`: `AccountUpdate_ChangeName_Success`
+- `should[ExpectedResult]_When[Scenario]`: `shouldSendNotification_WhenOpportunityClosedWon`
+
+Examples:
+
+- `AccountUpdate_ChangeName_Success`
+- `EmailValidation_InvalidFormat_ThrowsException`
+- `shouldSendNotification_WhenOpportunityClosedWon`
+- `BatchExecution_RunningAsBatch_TriggerBypassed`
 
 ### Step 3 — Run the Smallest Useful Test Set
 
@@ -143,6 +164,13 @@ Cover all paths: positive, negative/exception, bulk (251+ records), callout/asyn
 | Callout | Success response, error response, timeout |
 | Selector | Query results for valid/null/empty inputs, bulk (251+), field population, sort order verification, `WITH USER_MODE` enforcement via restricted-permission user (`System.runAs`) |
 | Scheduled | Execution, CRON validation |
+
+## Output Expectations
+
+Deliverables per test class:
+- `{ClassName}Test.cls`
+- `{ClassName}Test.cls-meta.xml` (MANDATORY — match the API version of the class under test; default `66.0`)
+- `TestDataFactory.cls` + `TestDataFactory.cls-meta.xml` (if not already present in the project)
 
 ## Output Format
 

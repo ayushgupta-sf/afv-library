@@ -75,9 +75,6 @@ public class TriggerHelper {
 
 ## 3. Guard Clauses & Fail-Fast
 
-> 💡 *Principles inspired by "Clean Apex Code" by Pablo Gonzalez.
-> [Purchase the book](https://link.springer.com/book/10.1007/979-8-8688-1411-2) for complete coverage.*
-
 ### The Problem
 
 Deeply nested validation leads to hard-to-read code where business logic is buried.
@@ -162,9 +159,6 @@ public Database.LeadConvertResult convertLead(Id leadId, Id accountId) {
 
 ## 4. Comment Best Practices
 
-> 💡 *Principles inspired by "Clean Apex Code" by Pablo Gonzalez.
-> [Purchase the book](https://link.springer.com/book/10.1007/979-8-8688-1411-2) for complete coverage.*
-
 ### Core Principle
 
 Comments should explain **"why"**, not **"what"**. The code itself should communicate the "what".
@@ -180,10 +174,6 @@ private static final Integer BULK_TEST_SIZE = 201;
 // GOOD: Documents platform limitation
 // Safe navigation (?.) doesn't work in formulas - must use IF(ISBLANK())
 // See Known Issue W-12345678
-
-// GOOD: References external documentation
-// Algorithm based on RFC 7519 (JSON Web Token specification)
-// See: https://tools.ietf.org/html/rfc7519#section-4.1
 
 // GOOD: Explains non-obvious optimization
 // SOQL query in a loop replaced with map-based lookup — O(1) per record.

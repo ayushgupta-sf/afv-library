@@ -3,9 +3,6 @@
  *
  * The Stub API enables dynamic mocking of interfaces and virtual classes.
  * Use when you need conditional logic or method tracking in your mocks.
- *
- * @see https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_interface_System_StubProvider.htm
- * @see https://blog.beyondthecloud.dev/blog/salesforce-mock-in-apex-tests
  */
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -115,7 +112,7 @@ public class AccountServiceStub implements System.StubProvider {
 private class AccountServiceStubTest {
 
     @IsTest
-    static void testWithConfiguredResponse() {
+    static void ConfiguredResponse_ReturnsExpectedValues() {
         // Arrange - Configure stub responses
         AccountServiceStub stub = new AccountServiceStub()
             .whenCalled('getAccountCount', 42)
@@ -144,7 +141,7 @@ private class AccountServiceStubTest {
     }
 
     @IsTest
-    static void testDefaultResponses() {
+    static void DefaultResponse_ReturnsDefaults() {
         // Arrange - No configured responses
         AccountServiceStub stub = new AccountServiceStub();
         IAccountService service = (IAccountService) Test.createStub(
@@ -241,7 +238,7 @@ public class ErrorStub implements System.StubProvider {
 private class ErrorStubTest {
 
     @IsTest
-    static void testErrorHandling() {
+    static void ErrorHandling_ThrowsConfiguredException() {
         // Arrange
         ErrorStub stub = new ErrorStub().failOn('getAccount', 'Account not found');
         IAccountService service = (IAccountService) Test.createStub(
@@ -265,8 +262,6 @@ private class ErrorStubTest {
 
 /**
  * Highly flexible stub that can mock any interface
- *
- * Inspired by: Suraj Pillai's UniversalMock pattern
  */
 @IsTest
 public class UniversalMock implements System.StubProvider {

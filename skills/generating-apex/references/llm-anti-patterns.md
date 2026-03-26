@@ -2,8 +2,6 @@
 
 This guide documents systematic errors that LLMs (including Claude) commonly make when generating Salesforce Apex code. These patterns are critical to validate in generated code.
 
-> **Source**: [LLM Mistakes in Apex & LWC - Salesforce Diaries](https://salesforcediaries.com/2026/01/16/llm-mistakes-in-apex-lwc-salesforce-code-generation-rules/)
-
 ---
 
 ## Table of Contents
@@ -703,4 +701,3 @@ def validate_apex(content):
 
 - **Existing Anti-Patterns**: See `references/anti-patterns.md` for traditional Apex anti-patterns
 - **Best Practices**: See `references/best-practices.md` for correct patterns
-- **Source**: [Salesforce Diaries - LLM Mistakes](https://salesforcediaries.com/2026/01/16/llm-mistakes-in-apex-lwc-salesforce-code-generation-rules/)

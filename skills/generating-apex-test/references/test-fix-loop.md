@@ -19,13 +19,13 @@ User: "Run tests for AccountService with auto-fix enabled"
 
 Claude:
 1. sf apex run test --class-names AccountServiceTest --code-coverage --result-format json
-2. Parse results: 1 failure - testBulkInsert line 45 NullPointerException
+2. Parse results: 1 failure - BulkInsert_Success line 45 NullPointerException
 3. Read AccountServiceTest.cls (line 45 context)
 4. Read AccountService.cls (trace the null reference)
 5. Identify: Missing null check in AccountService.processAccounts()
 6. generating-apex: Add null safety to AccountService.processAccounts()
 7. Deploy fix
-8. Re-run: sf apex run test --tests AccountServiceTest.testBulkInsert
+8. Re-run: sf apex run test --tests AccountServiceTest.BulkInsert_Success
 9. ✅ Passing! Report success.
 ```
 

@@ -199,3 +199,7 @@ A maintainer will merge your PR after approval.
 -   Open a PR.
 -   Respond to feedback.
 -   Keep your fork updated.
+
+> **Note:** Our rules forbid specific mentions of community members or
+> endorsements of sellable materials like training courses, books, etc.
+> Please ensure your contributions do not include these.

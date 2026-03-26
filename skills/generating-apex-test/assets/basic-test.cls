@@ -26,7 +26,7 @@ private class {{ClassName}}Test {
      * Tests successful {{methodUnderTest}} with valid input
      */
     @IsTest
-    static void test{{MethodUnderTest}}_ValidInput_Success() {
+    static void {{MethodUnderTest}}_ValidInput_Success() {
         // ─────────────────────────────────────────────────────────────────────
         // GIVEN - Set up test conditions
         // ─────────────────────────────────────────────────────────────────────
@@ -56,7 +56,7 @@ private class {{ClassName}}Test {
      * Tests {{methodUnderTest}} throws exception with null input
      */
     @IsTest
-    static void test{{MethodUnderTest}}_NullInput_ThrowsException() {
+    static void {{MethodUnderTest}}_NullInput_ThrowsException() {
         // ─────────────────────────────────────────────────────────────────────
         // GIVEN - Null input
         // ─────────────────────────────────────────────────────────────────────
@@ -83,7 +83,7 @@ private class {{ClassName}}Test {
      * Tests {{methodUnderTest}} handles invalid data gracefully
      */
     @IsTest
-    static void test{{MethodUnderTest}}_InvalidData_ReturnsError() {
+    static void {{MethodUnderTest}}_InvalidData_ReturnsError() {
         // ─────────────────────────────────────────────────────────────────────
         // GIVEN - Invalid input data
         // ─────────────────────────────────────────────────────────────────────
@@ -113,7 +113,7 @@ private class {{ClassName}}Test {
      *              251 records crosses the 200-record trigger batch boundary
      */
     @IsTest
-    static void test{{MethodUnderTest}}_BulkOperation_Success() {
+    static void {{MethodUnderTest}}_BulkOperation_Success() {
         // ─────────────────────────────────────────────────────────────────────
         // GIVEN - 251 records (crosses 200-record batch boundary)
         // ─────────────────────────────────────────────────────────────────────
@@ -147,7 +147,7 @@ private class {{ClassName}}Test {
      * Tests {{methodUnderTest}} with empty list input
      */
     @IsTest
-    static void test{{MethodUnderTest}}_EmptyList_NoError() {
+    static void {{MethodUnderTest}}_EmptyList_NoError() {
         // ─────────────────────────────────────────────────────────────────────
         // GIVEN - Empty list
         // ─────────────────────────────────────────────────────────────────────

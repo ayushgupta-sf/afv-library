@@ -37,8 +37,8 @@ sf apex run test \
 
 ```bash
 sf apex run test \
-  --tests AccountServiceTest.testCreate \
-  --tests AccountServiceTest.testUpdate \
+  --tests AccountServiceTest.CreateAccount_Success \
+  --tests AccountServiceTest.UpdateAccount_Success \
   --target-org my-sandbox
 ```
 
@@ -213,7 +213,7 @@ sf apex run test \
 
 ```bash
 sf apex run test \
-  --tests AccountServiceTest.testCreate \
+  --tests AccountServiceTest.CreateAccount_Success \
   --target-org my-sandbox
 ```
 

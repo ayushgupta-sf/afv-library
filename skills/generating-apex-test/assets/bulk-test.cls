@@ -20,7 +20,7 @@ private class {{ClassName}}BulkTest {
      *              Verifies trigger handles multiple batch chunks correctly
      */
     @IsTest
-    static void testBulkInsert_251Records_AllProcessed() {
+    static void BulkInsert_251Records_AllProcessed() {
         // GIVEN
         List<{{ObjectName}}> records = TestDataFactory.create{{ObjectName}}s(BULK_SIZE);
 
@@ -53,7 +53,7 @@ private class {{ClassName}}BulkTest {
      * Tests bulk insert at exact batch boundary (200 records)
      */
     @IsTest
-    static void testBulkInsert_ExactBatchSize_AllProcessed() {
+    static void BulkInsert_ExactBatchSize_AllProcessed() {
         // GIVEN
         List<{{ObjectName}}> records = TestDataFactory.create{{ObjectName}}s(SINGLE_BATCH);
 
@@ -78,7 +78,7 @@ private class {{ClassName}}BulkTest {
      *              Verifies update triggers handle multiple batches
      */
     @IsTest
-    static void testBulkUpdate_251Records_AllUpdated() {
+    static void BulkUpdate_251Records_AllUpdated() {
         // GIVEN - Insert records first
         List<{{ObjectName}}> records = TestDataFactory.create{{ObjectName}}s(BULK_SIZE);
         insert records;
@@ -116,7 +116,7 @@ private class {{ClassName}}BulkTest {
      *              Verifies delete triggers handle cleanup correctly
      */
     @IsTest
-    static void testBulkDelete_251Records_AllDeleted() {
+    static void BulkDelete_251Records_AllDeleted() {
         // GIVEN
         List<{{ObjectName}}> records = TestDataFactory.create{{ObjectName}}s(BULK_SIZE);
         insert records;
@@ -150,7 +150,7 @@ private class {{ClassName}}BulkTest {
      *              Verifies partial success scenarios are handled
      */
     @IsTest
-    static void testBulkMixedOperations_PartialSuccess() {
+    static void BulkMixedOperations_PartialSuccess() {
         // GIVEN - Some valid, some invalid records
         List<{{ObjectName}}> validRecords = TestDataFactory.create{{ObjectName}}s(200);
         List<{{ObjectName}}> invalidRecords = new List<{{ObjectName}}>();
@@ -199,23 +199,23 @@ private class {{ClassName}}BulkTest {
     private static void assertGovernorLimitsNotExceeded() {
         // SOQL Queries (limit: 100)
         Assert.isTrue(Limits.getQueries() < 90,
-            'SOQL queries approaching limit: ' + Limits.getQueries() + '/100');
+            'SOQL queries approaching limit: ' + Limits.getQueries() + '/' + Limits.getLimitQueries());
 
         // DML Statements (limit: 150)
         Assert.isTrue(Limits.getDmlStatements() < 140,
-            'DML statements approaching limit: ' + Limits.getDmlStatements() + '/150');
+            'DML statements approaching limit: ' + Limits.getDmlStatements() + '/' + Limits.getLimitDMLStatements());
 
         // DML Rows (limit: 10,000)
         Assert.isTrue(Limits.getDmlRows() < 9500,
-            'DML rows approaching limit: ' + Limits.getDmlRows() + '/10000');
+            'DML rows approaching limit: ' + Limits.getDmlRows() + '/' + Limits.getLimitDMLRows());
 
         // Heap Size (limit: 6MB sync, 12MB async)
         Assert.isTrue(Limits.getHeapSize() < 5000000,
-            'Heap size approaching limit: ' + Limits.getHeapSize() + '/6000000');
+            'Heap size approaching limit: ' + Limits.getHeapSize() + '/' + Limits.getLimitHeapSize());
 
         // CPU Time (limit: 10,000ms sync, 60,000ms async)
         Assert.isTrue(Limits.getCpuTime() < 9000,
-            'CPU time approaching limit: ' + Limits.getCpuTime() + '/10000');
+            'CPU time approaching limit: ' + Limits.getCpuTime() + '/' + Limits.getLimitCpuTime());
 
         System.debug('═══════════════════════════════════════════════════════');
         System.debug('GOVERNOR LIMIT USAGE:');
@@ -236,7 +236,7 @@ private class {{ClassName}}BulkTest {
      *              Use sparingly - consumes significant test execution time
      */
     @IsTest
-    static void testStressTest_501Records_AllProcessed() {
+    static void StressTest_501Records_AllProcessed() {
         // GIVEN
         List<{{ObjectName}}> records = TestDataFactory.create{{ObjectName}}s(LARGE_BULK_SIZE);
 

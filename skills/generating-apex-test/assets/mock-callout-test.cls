@@ -98,7 +98,7 @@ private class {{ClassName}}CalloutTest {
      * Tests successful API call returns expected data
      */
     @IsTest
-    static void testCallout_Success_ReturnsData() {
+    static void Callout_Success_ReturnsData() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new SuccessMock());
 
@@ -124,7 +124,7 @@ private class {{ClassName}}CalloutTest {
      * Tests POST request with body
      */
     @IsTest
-    static void testCallout_PostWithBody_Success() {
+    static void Callout_PostWithBody_Success() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new SuccessMock());
 
@@ -155,7 +155,7 @@ private class {{ClassName}}CalloutTest {
      * Tests handling of 400 Bad Request
      */
     @IsTest
-    static void testCallout_BadRequest_HandlesGracefully() {
+    static void Callout_BadRequest_HandlesGracefully() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new ErrorMock(400, 'Invalid request parameters'));
 
@@ -179,7 +179,7 @@ private class {{ClassName}}CalloutTest {
      * Tests handling of 500 Internal Server Error
      */
     @IsTest
-    static void testCallout_ServerError_HandlesGracefully() {
+    static void Callout_ServerError_HandlesGracefully() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new ErrorMock(500, 'Internal server error'));
 
@@ -199,7 +199,7 @@ private class {{ClassName}}CalloutTest {
      * Tests handling of timeout exception
      */
     @IsTest
-    static void testCallout_Timeout_ThrowsException() {
+    static void Callout_Timeout_ThrowsException() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new TimeoutMock());
 
@@ -222,7 +222,7 @@ private class {{ClassName}}CalloutTest {
      * Tests handling of 401 Unauthorized
      */
     @IsTest
-    static void testCallout_Unauthorized_HandlesGracefully() {
+    static void Callout_Unauthorized_HandlesGracefully() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new ErrorMock(401, 'Invalid or expired token'));
 
@@ -246,7 +246,7 @@ private class {{ClassName}}CalloutTest {
      * Verifies correct endpoint and method are used
      */
     @IsTest
-    static void testCallout_ValidatesRequestParameters() {
+    static void Callout_ValidatesRequestParameters() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new ValidatingMock('/api/v1/resource', 'POST'));
 
@@ -272,7 +272,7 @@ private class {{ClassName}}CalloutTest {
      *              Note: Must use Test.startTest/stopTest to execute @future
      */
     @IsTest
-    static void testFutureCallout_ExecutesSuccessfully() {
+    static void FutureCallout_ExecutesSuccessfully() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new SuccessMock());
 
@@ -290,7 +290,7 @@ private class {{ClassName}}CalloutTest {
      * Tests Queueable with callout
      */
     @IsTest
-    static void testQueueableCallout_ExecutesSuccessfully() {
+    static void QueueableCallout_ExecutesSuccessfully() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new SuccessMock());
 
@@ -327,7 +327,7 @@ private class {{ClassName}}CalloutTest {
      * Tests multiple callouts in sequence (limit: 100 per transaction)
      */
     @IsTest
-    static void testMultipleCallouts_AllSucceed() {
+    static void MultipleCallouts_AllSucceed() {
         // GIVEN
         Test.setMock(HttpCalloutMock.class, new MultiCalloutMock());
 

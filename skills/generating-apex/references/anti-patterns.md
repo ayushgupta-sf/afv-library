@@ -32,7 +32,7 @@ These patterns indicate poor code quality and should be refactored.
 | **No trigger bypass flag** | Can't disable for data loads | Add Custom Setting bypass |
 | **`System.debug()` in main code paths** | Performance impact from concatenating variables, even when logs are disabled | Use logging framework with levels |
 | **Unnecessary `isEmpty()` before DML** | Wastes CPU | Remove - DML handles empty lists |
-| **`!= false` comparisons** | Confusing double negative | Use `== true` or just the boolean |
+| **`!= false` comparisons** | Confusing double negative | Use `== true` or just the boolean if the value has been null checked |
 | **God Class** | Single class does everything | Split into Service/Selector/Domain |
 | **Magic Numbers** | Hardcoded values like `if (score > 75)` | Use named constants |
 
@@ -43,7 +43,7 @@ These patterns indicate poor code quality and should be refactored.
 **❌ BAD:**
 ```apex
 List<Account> accounts = [SELECT Id FROM Account];
-// Returns ALL accounts - could be millions!
+// Returns ALL accounts - could exceed the Total number of records retrieved by SOQL queries limit 
 ```
 
 **✅ GOOD:**
@@ -148,7 +148,7 @@ if (acc.IsActive__c == true) {
     // Clear intent
 }
 
-// Or even better
+// Or even better if acc.IsActive__c can't be null
 if (acc.IsActive__c) {
     // Most concise
 }
@@ -173,13 +173,13 @@ for (Account acc : accounts) {
 
 **✅ GOOD:**
 ```apex
-Map<Id, Account> accountsWithContacts = new Map<Id, Account>([
+List<Account> accountsWithContacts = [
     SELECT Id, (SELECT Id FROM Contacts)
     FROM Account
     WHERE Id IN :accountIds
-]);
+];
 
-for (Account acc : accountsWithContacts.values()) {
+for (Account acc : accountsWithContacts) {
     for (Contact con : acc.Contacts) {
         // No SOQL in loop
     }
@@ -204,18 +204,20 @@ public class AccountService {
 **✅ GOOD:**
 ```apex
 public class AccountService {
-    private List<Account> accounts;
+    
+    private List<Account> accounts {
+        get {
+            // lazy load only when needed
+            if (accounts == null) {
+                accounts = [SELECT Id FROM Account LIMIT 200];
+            }
+            return accounts; 
+        }
+        set { accounts = value; }
+    }
 
     public AccountService(List<Account> accounts) {
         this.accounts = accounts;  // Inject dependencies
-    }
-
-    // Or lazy load only when needed
-    private List<Account> getAccounts() {
-        if (accounts == null) {
-            accounts = [SELECT Id FROM Account LIMIT 200];
-        }
-        return accounts;
     }
 }
 ```
@@ -266,8 +268,6 @@ Set<Id> uniqueIds = new Set<Id>(allIds);  // O(1) deduplication
 ---
 
 ## Code Smell Catalog
-
-Based on "Clean Apex Code" by Pablo Gonzalez and clean code principles.
 
 ### Long Methods
 

@@ -10,8 +10,6 @@ The Trigger Actions Framework provides a metadata-driven approach to trigger man
 
 ## Installation
 
-Install from: https://github.com/mitchspano/trigger-actions-framework
-
 ## Basic Setup
 
 ### 1. Create the Trigger
