@@ -1,40 +1,32 @@
 # Assertion Patterns
 
-**ALWAYS use the `Assert` class.** Never use the legacy `System.assert`, `System.assertEquals`, or `System.assertNotEquals` methods — they are deprecated. Replace any existing usage during refactors.
-
 ## Assertion Methods
-
-The `Assert` class provides methods to assert various conditions in test methods. All methods support an optional message parameter for better error reporting.
 
 | Method | Use Case |
 |--------|----------|
 | `Assert.areEqual(expected, actual, msg)` | Exact equality |
-| `Assert.areNotEqual(notExpected, actual, msg)` | Value should differ |
-| `Assert.isTrue(condition, msg)` | Boolean condition is true |
-| `Assert.isFalse(condition, msg)` | Boolean condition is false |
-| `Assert.isNull(value, msg)` | Value is null |
-| `Assert.isNotNull(value, msg)` | Value is not null |
-| `Assert.isInstanceOfType(instance, expectedType, msg)` | Instance is of specified type |
-| `Assert.isNotInstanceOfType(instance, notExpectedType, msg)` | Instance is not of specified type |
-| `Assert.fail(msg)` | Explicitly fail the test |
+| `Assert.areNotEqual(expected, actual, msg)` | Value should differ |
+| `Assert.isTrue(condition, msg)` | Boolean condition |
+| `Assert.isFalse(condition, msg)` | Negated boolean condition |
+| `Assert.fail(msg)` | Force failure (e.g., expected exception not thrown) |
+| `Assert.isNotNull(value, msg)` | Non-null check |
+| `Assert.isNull(value, msg)` | Null check |
 
-**Always include the message parameter** -- makes test failures meaningful and easier to debug.
-
-**Note:** Assertion failures are fatal errors that halt code execution. You cannot catch assertion failures using try/catch blocks, even though they're logged as exceptions.
+**Always include the message parameter** — makes test failures actionable.
 
 ## Good vs Bad Assertions
 
-### ❌ Bad: No message, tests coverage not behavior
+### Bad: No message, tests coverage not behavior
 
 ```apex
-Assert.areEqual(true, result);
-Assert.isTrue(accounts.size() > 0);
+Assert.isTrue(result); // no message
+Assert.isTrue(accounts.size() > 0); // vague — use areEqual with exact count
 ```
 
-### ✅ Good: Descriptive message, tests specific behavior
+### Good: Descriptive message, tests specific behavior
 
 ```apex
-Assert.isTrue(result, 'Service should return true for valid input');
+Assert.areEqual(true, result, 'Service should return true for valid input');
 Assert.areEqual(200, accounts.size(), 'All 200 accounts should be processed');
 ```
 
@@ -43,25 +35,18 @@ Assert.areEqual(200, accounts.size(), 'All 200 accounts should be processed');
 ### Collection Size
 
 ```apex
-// Exact count
 Assert.areEqual(200, results.size(), 'Should process all 200 records');
-
-// Not empty
-Assert.isFalse(results.isEmpty(), 'Results should not be empty');
-
-// Empty
 Assert.isTrue(results.isEmpty(), 'No results expected for invalid input');
+Assert.isFalse(results.isEmpty(), 'Results should not be empty');
 ```
 
 ### Field Values
 
 ```apex
-// Single record
 Assert.areEqual('Processed', acc.Status__c, 'Account status should be updated to Processed');
 
-// All records in collection
 for (Account acc : updatedAccounts) {
-    Assert.areEqual('Active', acc.Status__c, 
+    Assert.areEqual('Active', acc.Status__c,
         'Account ' + acc.Name + ' should have Active status');
 }
 ```
@@ -69,23 +54,17 @@ for (Account acc : updatedAccounts) {
 ### Exception Testing
 
 ```apex
-@IsTest
-private static void shouldThrowException_WhenInputInvalid() {
-    Boolean exceptionThrown = false;
-    String exceptionMessage = '';
-    
+@isTest
+static void shouldThrowException_WhenInputInvalid() {
     Test.startTest();
     try {
         MyService.process(null);
+        Assert.fail('Expected MyCustomException for null input');
     } catch (MyCustomException e) {
-        exceptionThrown = true;
-        exceptionMessage = e.getMessage();
+        Assert.isTrue(e.getMessage().contains('cannot be null'),
+            'Exception message should mention null input');
     }
     Test.stopTest();
-    
-    Assert.isTrue(exceptionThrown, 'MyCustomException should be thrown for null input');
-    Assert.isTrue(exceptionMessage.contains('cannot be null'), 
-        'Exception message should mention null input');
 }
 ```
 
@@ -98,111 +77,32 @@ for (Database.SaveResult sr : results) {
     Assert.isTrue(sr.isSuccess(), 'Insert should succeed: ' + sr.getErrors());
 }
 
-// Expected failures
 Database.SaveResult sr = Database.insert(invalidAccount, false);
 Assert.isFalse(sr.isSuccess(), 'Insert should fail for invalid data');
 Assert.isTrue(sr.getErrors()[0].getMessage().contains('REQUIRED_FIELD_MISSING'),
     'Error should indicate missing required field');
 ```
 
-### Comparing Objects
-
-```apex
-// Compare specific fields, not entire objects
-Assert.areEqual(expected.Name, actual.Name, 'Names should match');
-Assert.areEqual(expected.Status__c, actual.Status__c, 'Status should match');
-
-// Or use JSON for deep comparison (use sparingly)
-Assert.areEqual(
-    JSON.serialize(expected), 
-    JSON.serialize(actual), 
-    'Objects should be identical'
-);
-```
-
-### Date/DateTime Assertions
-
-```apex
-// Exact date
-Assert.areEqual(Date.today(), record.CreatedDate__c, 'Should be created today');
-
-// Date within range
-Assert.isTrue(record.DueDate__c >= Date.today(), 'Due date should be in the future');
-Assert.isTrue(record.DueDate__c <= Date.today().addDays(30), 
-    'Due date should be within 30 days');
-```
-
 ### Null Checks
 
 ```apex
-// Should be null
 Assert.isNull(result.ErrorMessage__c, 'No error expected for valid input');
-
-// Should not be null
 Assert.isNotNull(result.Id, 'Record should have been inserted');
 ```
 
-### Type Checking
+### Date/DateTime
 
 ```apex
-// Verify instance is of expected type
-Object result = MyService.processData();
-Assert.isInstanceOfType(result, MyCustomClass.class, 
-    'Result should be an instance of MyCustomClass');
-
-// Verify instance is not of a specific type
-Object handler = HandlerFactory.create('Account');
-Assert.isNotInstanceOfType(handler, ContactHandler.class, 
-    'Account handler should not be a ContactHandler');
+Assert.areEqual(Date.today(), record.CreatedDate__c, 'Should be created today');
+Assert.isTrue(record.DueDate__c >= Date.today(), 'Due date should be in the future');
 ```
 
-### Explicit Test Failures
+## Anti-Patterns
 
-```apex
-// Use Assert.fail() when an exception should have been thrown but wasn't
-@IsTest
-private static void shouldThrowException_WhenInputInvalid() {
-    try {
-        MyService.process(null);
-        Assert.fail('Expected MyCustomException to be thrown for null input');
-    } catch (MyCustomException e) {
-        // Exception was thrown as expected, test passes
-        Assert.isTrue(e.getMessage().contains('cannot be null'), 
-            'Exception message should mention null input');
-    }
-}
-```
-
-## Anti-Patterns to Avoid
-
-### ❌ Testing implementation, not behavior
-
-```apex
-// Bad: Testing that a specific method was called
-Assert.isTrue(MyClass.methodWasCalled, 'Method should be called');
-
-// Good: Testing the observable outcome
-Assert.areEqual('Expected Value', record.Field__c, 'Field should be updated');
-```
-
-### ❌ Overly generic assertions
-
-```apex
-// Bad: Passes for any non-empty result
-Assert.isTrue(results.size() > 0);
-
-// Good: Verifies exact expected count
-Assert.areEqual(200, results.size(), 'All 200 records should be returned');
-```
-
-### ❌ Missing negative test assertions
-
-```apex
-// Bad: Only tests that no exception occurred
-MyService.process(data); // Test passes if no exception
-
-// Good: Verifies the actual outcome
-Result r = MyService.process(data);
-Assert.areEqual('Success', r.status, 'Processing should succeed');
-Assert.areEqual(0, r.errorCount, 'No errors should occur');
-```
+| Anti-Pattern | Fix |
+|---|---|
+| `Assert.isTrue(results.size() > 0)` | Use `Assert.areEqual(expectedCount, results.size(), ...)` |
+| `Assert.isTrue(results.size() >= expected)` | Compute exact expected count, use `Assert.areEqual` |
+| Testing implementation not behavior | Assert on observable outcomes (field values, record counts) |
+| Missing negative test assertions | Verify the actual outcome, not just that no exception occurred |
+| `Assert.isTrue(count != 0)` | Use `Assert.areEqual` with deterministic value from test data |
