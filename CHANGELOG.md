@@ -1,3 +1,12 @@
+## [1.5.3](https://github.com/forcedotcom/afv-library/compare/1.5.2...1.5.3) (2026-03-31)
+
+
+### Bug Fixes
+
+* update details for PR title  ([#153](https://github.com/forcedotcom/afv-library/issues/153)) ([dcc1804](https://github.com/forcedotcom/afv-library/commit/dcc18049aa946015ee5482982397273b7b4af277))
+
+
+
 ## [1.5.2](https://github.com/forcedotcom/afv-library/compare/1.5.1...1.5.2) (2026-03-31)
 
 
