@@ -93,10 +93,23 @@ Read every resource the user provides. Then summarize what you extracted — kee
 **Now generate the description** using both the user's description and the extracted context.
 Expand it to include trigger phrases, `TRIGGER when` / `DO NOT TRIGGER when` clauses, and the word "use".
 
-Show it back and use `AskUserQuestion`:
+**Print the description as plain text in your response message first**, then call `AskUserQuestion`. The user cannot see the description inside the tool's question or option fields — it must appear in the message body before the tool call.
+
+Example message format:
+```
+Here's the skill description I've drafted:
+
+> **Skill name:** `generating-<name>`
+>
+> **Description:** <full description text here>
+
+Does this capture it?
+```
+
+Then use `AskUserQuestion`:
 
 ```
-question: "Here's the skill description I've drafted — does this capture it?"
+question: "Does this description capture what you want the skill to do?"
 header: "Description"
 options:
   - label: "Looks good (Recommended)"
