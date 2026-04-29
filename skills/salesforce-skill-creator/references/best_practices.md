@@ -65,6 +65,7 @@ The description is the most important field — it determines when the skill tri
 - Front-load the primary use case.
 - Include specific keywords users say: "Apex", ".cls", "trigger", "batch job".
 - Add `TRIGGER when:` and `DO NOT TRIGGER when:` clauses.
+- **Be pushy**: list implicit triggers where the user may not use the domain term directly.
 - Keep it factual and specific.
 
 ### Don't
@@ -74,11 +75,24 @@ The description is the most important field — it determines when the skill tri
 - Make it too narrow: only one exact phrase triggers it.
 - Make it too broad: triggers on everything.
 
+### Be Pushy About Triggers
+
+Err on the side of listing more implicit triggers, not fewer. A skill that never fires is useless;
+a skill that fires on a near-miss is recoverable. Explicitly call out contexts where the skill
+applies **even if the user doesn't name the domain directly**:
+
+> "TRIGGER when: user asks to add a rule, restrict a field, or enforce a policy — even if they
+> don't explicitly say 'validation rule' or 'Apex'."
+
+This is especially important for domain keywords the user may not know (e.g., they say "make this
+field required" not "add a required validation rule").
+
 ### Template
 
 ```
 <Primary purpose statement>. ALWAYS ACTIVATE when <high-confidence triggers>.
-Use this skill for <broader use cases>. TRIGGER when: <specific list>.
+Use this skill for <broader use cases>. TRIGGER when: <specific list — include implicit
+contexts where the user may not use the exact domain term>.
 DO NOT TRIGGER when: <exclusions with delegation targets>.
 ```
 

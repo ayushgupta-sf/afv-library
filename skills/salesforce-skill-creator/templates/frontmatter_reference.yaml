@@ -43,6 +43,13 @@ description:
 # OPTIONAL FIELDS
 # ============================================================
 
+license:
+  type: string
+  required: false
+  description: "License for the skill. Top-level frontmatter field — NOT nested under metadata."
+  default: "LICENSE.txt has complete terms"
+  example: "LICENSE.txt"
+
 metadata:
   type: object
   required: false
@@ -59,10 +66,6 @@ metadata:
       type: string
       description: "CLI usage hint shown in autocomplete."
       example: "<class-name> [--type service|selector|batch]"
-    license:
-      type: string
-      description: "License reference for the skill. Nested inside metadata."
-      default: "LICENSE.txt has complete terms"
 
 # ============================================================
 # COMMON MISTAKES
@@ -82,3 +85,8 @@ metadata:
 # 4. Missing "use" in description
 #    Validator checks for the word "use" (case-insensitive)
 #    Include: "Use when...", "Use this skill for...", etc.
+#
+# 5. license nested under metadata
+#    BAD:  metadata:
+#            license: ...
+#    GOOD: license: Apache-2.0   # top-level field

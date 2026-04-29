@@ -1,10 +1,10 @@
 ---
 name: <SKILL_NAME>
 description: "<DESCRIPTION — 20+ words, <= 1024 chars, must contain 'use'. Include TRIGGER when and DO NOT TRIGGER when clauses.>"
+license: LICENSE.txt has complete terms
 metadata:
   version: "1.0"
   stage: Draft
-  license: LICENSE.txt has complete terms
 ---
 
 # <Skill Title>

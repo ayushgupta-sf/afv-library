@@ -1,11 +1,10 @@
 ---
 name: salesforce-skill-creator
-description: "AI-assisted skill authoring pipeline for the afv-library. Use when the user wants to create a new skill, update an existing skill, generate a skill spec, scaffold skill files, or add a new capability to the skill catalog. TRIGGER when: user says create skill, new skill, skill creator, author skill, scaffold skill, generate skill, update skill, add a skill, skill pipeline. DO NOT TRIGGER when: user is directly editing an existing SKILL.md without asking for guided authoring."
-when_to_use: "Invoke this skill whenever someone needs to add a new capability to the afv-library skill catalog, or wants to update/improve an existing skill. This includes creating skills for Apex, metadata, LWC, Flow, Agentforce, or any Salesforce domain."
+description: "AI-assisted skill authoring pipeline for the afv-library. Use when the user wants to create a new skill, update an existing skill, generate a skill spec, scaffold skill files, or add a new capability to the skill catalog. TRIGGER when: user says create skill, new skill, skill creator, author skill, scaffold skill, generate skill, update skill, add a skill, skill pipeline. DO NOT TRIGGER when: user is directly editing an existing SKILL.md without asking for guided authoring.Invoke this skill whenever someone needs to add a new capability to the afv-library skill catalog, or wants to update/improve an existing skill. This includes creating skills for Apex, metadata, LWC, Flow, Agentforce, or any Salesforce domain."
+license: LICENSE.txt has complete terms
 metadata:
   version: "1.0"
   stage: Pilot
-  license: LICENSE.txt has complete terms
 ---
 
 # Instructions
@@ -257,7 +256,6 @@ skills/<name>/
 ├── references/<files>
 ├── examples/<files>
 └── tests/
-    ├── unit/
     └── evals/<dataset-1>/, <dataset-2>/, <dataset-3>/
 
 Key decisions:
@@ -273,7 +271,7 @@ question: "Would you like to make any changes?"
 header: "Review"
 options:
   - label: "Looks good"
-    description: "Proceed to generating eval stubs."
+    description: "Proceed to generating eval datasets."
   - label: "I want changes"
     description: "Tell me what to modify and I'll update the skill."
 ```
@@ -282,7 +280,7 @@ If changes requested: collect feedback, edit files, re-validate, re-print, retur
 
 ---
 
-## Step 5 — Generate eval stubs
+## Step 5 — Generate eval datasets
 
 Read `./templates/tests_structure.md` before writing eval files.
 
@@ -319,7 +317,7 @@ options:
 
 ---
 
-## Step 7 — Done
+## Step 6 — Done
 
 Print the final summary:
 
