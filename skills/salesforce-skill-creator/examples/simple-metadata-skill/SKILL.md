@@ -34,12 +34,12 @@ Defaults:
 1. **Identify the object** — confirm the API name of the target object.
 2. **Understand the rule** — translate the business requirement into a boolean formula.
 3. **Check existing rules** — look for overlapping validation rules on the same object.
-4. **Read the metadata template** — load `assets/validation_rule_template.xml` before generating.
+4. **Read the metadata template** — load `./assets/validation_rule_template.xml` before generating.
 5. **Write the formula** — the formula must evaluate to `TRUE` when the data is **invalid**.
-   For common formula patterns, read `references/formula_patterns.md`.
+   For common formula patterns, read `./references/formula_patterns.md`.
 6. **Set error message** — clear, user-friendly message explaining what's wrong and how to fix it.
 7. **Create metadata file** — generate the `.validationRule-meta.xml` using the template structure.
-   Compare against `examples/require_email_on_contact.xml` for expected output format.
+   Compare against `./examples/require_email_on_contact.xml` for expected output format.
 8. **Syntax check** — verify the formula compiles (field API names, function syntax).
 9. **Edge case review** — test with null values, blank strings, boundary conditions.
 
@@ -67,7 +67,7 @@ Defaults:
 Deliverables per validation rule:
 - `<ObjectName>.validationRule-meta.xml`
 
-File structure follows the template in `assets/validation_rule_template.xml`.
+File structure follows the template in `./assets/validation_rule_template.xml`.
 
 ## Cross-Skill Integration
 
@@ -82,6 +82,6 @@ File structure follows the template in `assets/validation_rule_template.xml`.
 
 | File | When to read |
 |------|-------------|
-| `assets/validation_rule_template.xml` | Before generating any validation rule metadata file |
-| `references/formula_patterns.md` | When writing the formula — common patterns and functions |
-| `examples/require_email_on_contact.xml` | To verify generated output matches expected format |
+| `./assets/validation_rule_template.xml` | Before generating any validation rule metadata file |
+| `./references/formula_patterns.md` | When writing the formula — common patterns and functions |
+| `./examples/require_email_on_contact.xml` | To verify generated output matches expected format |
